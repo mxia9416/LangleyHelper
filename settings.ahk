@@ -2,30 +2,122 @@
 #Include pathtonowhere.ahk
 #Include <github>
 
+ClickAutoCheckUpdate(*) {
+    global isCheckedAutoCheckUpdate
+    isCheckedAutoCheckUpdate := 1 - isCheckedAutoCheckUpdate
+}
+
+ClickOnEnterGame(*) {
+    global isCheckedEnterGame
+    isCheckedEnterGame := 1 - isCheckedEnterGame
+}
+
+ClickOnDailyCheck(*) {
+    global isCheckedDailyCheck
+    isCheckedDailyCheck := 1 - isCheckedDailyCheck
+}
+
+ClickOnPurchase(*) {
+    global isCheckedPurchase
+    isCheckedPurchase := 1 - isCheckedPurchase
+}
+
+ClickOnMiMeng(*) {
+    global isCheckedMiMeng
+    isCheckedMiMeng := 1 - isCheckedMiMeng
+}
+
+ClickOnFriend(*) {
+    global isCheckedFriend
+    isCheckedFriend := 1 - isCheckedFriend
+}
+
+ClickOnOversight(*) {
+    global isCheckedOversight
+    isCheckedOversight := 1 - isCheckedOversight
+}
+
+ClickOnOffice(*) {
+    global isCheckedOffice
+    isCheckedOffice := 1 - isCheckedOffice
+}
+
+ClickOnDoMemoryStorm(*) {
+    global isCheckedDoMemoryStorm
+    isCheckedDoMemoryStorm := 1 - isCheckedDoMemoryStorm
+}
+
+ClickOnDoWell(*) {
+    global isCheckedDoWell
+    isCheckedDoWell := 1 - isCheckedDoWell
+}
+
+ClickOnSweepSeed(*) {
+    global isCheckedSweepSeed
+    isCheckedSweepSeed := 1 - isCheckedSweepSeed
+}
+
+ClickOnSkill(*) {
+    global isCheckedSweepSkill
+    isCheckedSweepSkill := 1 - isCheckedSweepSkill
+}
+
+ClickOnCollectDaily(*) {
+    global isCheckedCollectDaily
+    isCheckedCollectDaily := 1 - isCheckedCollectDaily
+}
+
+ClickOnSweepGold(*) {
+    global isCheckedSweepGold
+    isCheckedSweepGold := 1 - isCheckedSweepGold
+}
+
+ChangeOnSleepTime(GUICtrl, *) {
+    global sleepTime
+    switch GUICtrl.Value {
+        case 1: sleepTime := 750
+        case 2: sleepTime := 1000
+        case 3: sleepTime := 1250
+        case 4: sleepTime := 1500
+        case 5: sleepTime := 1750
+        case 6: sleepTime := 2000
+        default: sleepTime := 1500
+    }
+}
+
+ChangeOnColorTolerance(GUICtrl, *) {
+    global colorTolerance
+    switch GUICtrl.Value {
+        case 1: colorTolerance := 15
+        case 2: colorTolerance := 35
+        default: colorTolerance := 15
+    }
+}
+
 ClickOnHelp(*) {
     msgbox "
     (
     #############################################
     使用说明
 
-    对大多数老玩家来说夜莺设置保持默认就好。
-    万一夜莺失控，请按Ctrl + 1组合键结束进程。
-    万一夜莺失控，请按Ctrl + 1组合键结束进程。
-    万一夜莺失控，请按Ctrl + 1组合键结束进程。
+    对大多数老玩家来说雪鸮设置保持默认就好。
+    万一雪鸮失控，请按Ctrl + 1组合键结束进程。
+    万一雪鸮失控，请按Ctrl + 1组合键结束进程。
+    万一雪鸮失控，请按Ctrl + 1组合键结束进程。
 
     ############################################# 
     要求：
 
     - 【雷电模拟器-设置-性能设置-分辨率-平板版-1920x1080（dpi280）】
     - 游戏语言设置为简体中文
-    - 以**管理员身份**运行夜莺小助手
+    - 以**管理员身份**运行雪鸮小助手
     - 不要开启windows HDR显示
 
     ############################################# 
     步骤：
 
-    -用雷电模拟器打开无期迷途，在卓娅出现之后，打开夜莺小助手点击“开始办公！”按钮。然后就可以悠闲地去泡一杯咖啡，或者刷一会儿手机，等待夜莺完成工作了。
-    -游戏需要更新的时候请更新完再使用夜莺。
+    -用雷电模拟器打开无期迷途，在卓娅出现之后，打开雪鸮小助手点击“开始办公！”按钮。然后就可以悠闲地去泡一杯咖啡，或者刷一会儿手机，等待雪鸮完成工作了。
+    -游戏需要更新的时候请更新完再使用雪鸮。
 
     ############################################# 
     其他:
@@ -42,7 +134,7 @@ ClickOnCheckForUpdate(*) {
     latestObj := Github.latest(usr, repo)
     if currentVersion != latestObj.version {
         userResponse := MsgBox(
-            "夜莺小助手存在更新版本:`n"
+            "雪鸮小助手存在更新版本:`n"
             "`nVersion: " latestObj.version
             "`nNotes:`n"
             . latestObj.change_notes
@@ -50,20 +142,20 @@ ClickOnCheckForUpdate(*) {
 
         if (userResponse = "Yes") {
             try {
-                Github.Download(latestObj.downloadURLs[1], A_ScriptDir "\DoroDownload")
+                Github.Download(latestObj.downloadURLs[1], A_ScriptDir "\YYDownload")
             }
             catch as err {
                 MsgBox "下载失败，请检查网络。"
             }
             else {
-                FileMove "DoroDownload.exe", "DoroHelper-" latestObj.version ".exe"
+                FileMove "DoroDownload.exe", "NightingaleHelper-" latestObj.version ".exe"
                 MsgBox "已下载至当前目录。"
                 ExitApp
             }
         }
     }
     else {
-        MsgBox "当前Doro已是最新版本。"
+        MsgBox "当前雪鸮小助手已是最新版本。"
     }
 }
 
@@ -71,7 +163,7 @@ CheckForUpdate() {
     latestObj := Github.latest(usr, repo)
     if currentVersion != latestObj.version {
         userResponse := MsgBox(
-            "DoroHelper存在更新版本:`n"
+            "雪鸮小助手存在更新版本:`n"
             "`nVersion: " latestObj.version
             "`nNotes:`n"
             . latestObj.change_notes
@@ -79,13 +171,13 @@ CheckForUpdate() {
 
         if (userResponse = "Yes") {
             try {
-                Github.Download(latestObj.downloadURLs[1], A_ScriptDir "\DoroDownload")
+                Github.Download(latestObj.downloadURLs[1], A_ScriptDir "\YYDownload")
             }
             catch as err {
                 MsgBox "下载失败，请检查网络。"
             }
             else {
-                FileMove "DoroDownload.exe", "DoroHelper-" latestObj.version ".exe"
+                FileMove "DoroDownload.exe", "NightingaleHelper-" latestObj.version ".exe"
                 MsgBox "已下载至当前目录。"
                 ExitApp
             }
@@ -93,7 +185,7 @@ CheckForUpdate() {
     }
 }
 
-ClickOnYeying(*) {
+ClickOnLanli(*) {
     WriteSettings()
 
     title := "雷电模拟器"
@@ -108,6 +200,7 @@ ClickOnYeying(*) {
     loop {
 
         ;scrRatio := windowW / stdScreenW
+        
 
         WinActivate "雷电模拟器"
 
@@ -126,6 +219,12 @@ ClickOnYeying(*) {
         if isCheckedOversight
             Oversight()
 
+        if isCheckedPurchase
+            Purchase()
+
+        if isCheckedOffice
+            Office()
+
         if isCheckedDoMemoryStorm
             DoMemoryStorm()
 
@@ -141,17 +240,11 @@ ClickOnYeying(*) {
         if isCheckedSweepSkill
             SweepSkill()
 
-        if isCheckedPurchase
-            Purchase()
-
-        if isCheckedOffice
-            Office()
-
         if isCheckedCollectDaily
             CollectDaily()
     }
 
-    MsgBox "夜莺完成工作！"
+    MsgBox "雪鸮完成工作！"
 
     ExitApp
 }
@@ -237,17 +330,17 @@ LoadSettings() {
     isCheckedAutoCheckUpdate := IniRead("settings.ini", "section1", "isCheckedAutoCheckUpdate")
 }
 
-isCheckedEnterGame := 1
-isCheckedDailyCheck := 1
-isCheckedMiMeng := 1
-isCheckedFriend := 1
-isCheckedOversight := 1
-isCheckedPurchase := 1
-isCheckedOffice := 1
-isCheckedDoMemoryStorm := 1
-isCheckedDoWell := 1
-isCheckedSweepGold := 1
-isCheckedSweepSeed := 0
-isCheckedSweepSkill := 0
-isCheckedCollectDaily := 1
-isCheckedAutoCheckUpdate := 1
+global isCheckedEnterGame := 1
+global isCheckedDailyCheck := 1
+global isCheckedMiMeng := 1
+global isCheckedFriend := 1
+global isCheckedOversight := 1
+global isCheckedPurchase := 1
+global isCheckedOffice := 1
+global isCheckedDoMemoryStorm := 1
+global isCheckedDoWell := 1
+global isCheckedSweepGold := 1
+global isCheckedSweepSeed := 0
+global isCheckedSweepSkill := 0
+global isCheckedCollectDaily := 1
+global isCheckedAutoCheckUpdate := 1

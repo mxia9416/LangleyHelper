@@ -15,7 +15,6 @@ global waitTolerance := 10
 global colorTolerance := 15
 global stdScreenW := 1920
 global stdScreenH := 1080
-WinGetPos &windowX, &windowY, &windowW, &windowH, "雷电模拟器"
 
 F1:: {
     ;EnterGame()
@@ -39,8 +38,8 @@ F1:: {
 }
 
 global currentVersion := "v0.1"
-global usr := "kyokakawaii"
-global repo := "DoroHelper"
+global usr := "mxia9416"
+global repo := "NightingaleHelper"
 
 ;;Tasks
 EnterGame() {
@@ -246,10 +245,15 @@ CollectDaily(){
     BackToHome()
 }
 
-
+try {
+    WinGetPos &windowX, &windowY, &windowW, &windowH, "雷电模拟器" 
+} catch as err{
+    MsgBox "请先开启雷电模拟器"
+    ExitApp
+} 
 
 if !A_IsAdmin {
-    MsgBox "请以管理员身份运行夜莺小助手"
+    MsgBox "请以管理员身份运行雪鸮小助手"
     ExitApp
 }
 
@@ -267,18 +271,18 @@ if isCheckedAutoCheckUpdate {
 }
 
 ;创建gui
-YYGui := Gui(, "夜莺小助手 " currentVersion)
+YYGui := Gui(, "雪鸮小助手 " currentVersion)
 YYGui.Opt("+Resize")
 YYGui.MarginY := Round(YYGui.MarginY * 0.9)
 YYGui.SetFont("cred s15")
 YYGui.Add("Text", "R1", "紧急停止按ctrl + 1")
-YYGui.Add("Link"," R1", '<a href="https://github.com/">项目地址</a>')
+YYGui.Add("Link"," R1", '<a href="https://github.com/mxia9416/NightingaleHelper">项目地址</a>')
 YYGui.SetFont()
 YYGui.Add("Button", "R1 x+10", "帮助").OnEvent("Click", ClickOnHelp)
 YYGui.Add("Button","R1 x+10","检查更新").OnEvent("Click", ClickOnCheckForUpdate)
 Tab := YYGui.Add("Tab3","xm") ;由于autohotkey有bug只能这样写
-Tab.Add(["doro设置","收获","商店","日常","默认"])
-Tab.UseTab("doro设置")
+Tab.Add(["雪鸮设置","收获","作战"])
+Tab.UseTab("雪鸮设置")
 YYGui.Add("Checkbox", IsCheckedToString(isCheckedAutoCheckUpdate) " R2", "自动检查更新(确保能连上github)").OnEvent("Click", ClickAutoCheckUpdate)
 YYGui.Add("Text",, "点击间隔(单位毫秒)，谨慎更改")
 YYGui.Add("DropDownList", "Choose" SleepTimeToLabel(sleepTime),  [750, 1000, 1250, 1500, 1750, 2000]).OnEvent("Change", ChangeOnSleepTime)
@@ -286,54 +290,25 @@ YYGui.Add("Text",, "色差容忍度，能跑就别改")
 YYGui.Add("DropDownList", "Choose" ColorToleranceToLabel(colorTolerance), ["严格", "宽松"]).OnEvent("Change", ChangeOnColorTolerance)
 YYGui.Add("Button","R1" , "保存当前设置").OnEvent("Click", SaveSettings)
 Tab.UseTab("收获")
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedOutposeDefence) " R1.2", "领取前哨基地防御奖励+1次免费歼灭").OnEvent("Click", ClickOnOutpostDefence)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedCashShop) " R1.2", "领取付费商店免费钻(进不了商店的别选)").OnEvent("Click", ClickOnCashShop)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedExpedtion) " R1.2", "派遣委托").OnEvent("Click", ClickOnExpedition)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedFriendPoint) " R1.2", "好友点数收取").OnEvent("Click", ClickOnFriendPoint)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedMail) " R1.2", "邮箱收取").OnEvent("Click", ClickOnMail)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedMission) " R1.2", "任务收取").OnEvent("Click", ClickOnMission)
-Tab.UseTab("商店")
-YYGui.Add("Text","R1.2 Section", "普通商店")
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedFreeShop) " R1.2 xs+15 ", "每日白嫖2次").OnEvent("Click", ClickOnFreeShop)
-YYGui.Add("CheckBox", " R1.2 xs+15", "购买简介个性化礼包")
-YYGui.Add("Text","R1.2 xs", "竞技场商店")
-YYGui.Add("Text","R1.2 xs+15", "购买手册：")
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedBook[1]) " R1.2 xs+15", "燃烧").OnEvent("Click", ClickOnFireBook)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedBook[2]) " R1.2 X+1", "水冷").OnEvent("Click", ClickOnWaterBook)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedBook[3]) " R1.2 X+1", "风压").OnEvent("Click", ClickOnWindBook)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedBook[4]) " R1.2 X+1", "电击").OnEvent("Click", ClickOnElecBook)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedBook[5]) " R1.2 X+1", "铁甲").OnEvent("Click", ClickOnIronBook)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedCompanyWeapon) " R1.2 xs+15", "购买公司武器熔炉").OnEvent("Click", ClickOnCompanyWeapon)
-YYGui.Add("CheckBox", " R1.2", "购买简介个性化礼包")
-YYGui.Add("Text","R1.2 xs Section", "废铁商店（简介个性化礼包和废铁商店还在做）")
-YYGui.Add("Checkbox", " R1.2 xs+15", "购买珠宝")
-YYGui.Add("Text", " R1.2 xs+15", "购买好感券：")
-YYGui.Add("Checkbox", " R1.2 xs+15", "通用")
-YYGui.Add("Checkbox", " R1.2 x+1", "朝圣者")
-YYGui.Add("Checkbox", " R1.2 x+1", "反常")
-YYGui.Add("Checkbox", " R1.2 xs+15", "极乐净土")
-YYGui.Add("Checkbox", " R1.2 x+1", "米西利斯")
-YYGui.Add("Checkbox", " R1.2 x+1", "泰特拉")
-YYGui.Add("Text", " R1.2 xs+15", "购买资源")
-YYGui.Add("Checkbox", " R1.2 xs+15", "信用点+盒")
-YYGui.Add("Checkbox", " R1.2 x+1", "战斗数据辑盒")
-YYGui.Add("Checkbox", " R1.2 x+1", "芯尘盒")
-Tab.UseTab("日常")
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedSimulationRoom) " R1.2", "模拟室5C(普通关卡需要快速战斗)").OnEvent("Click", ClickOnSimulationRoom)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedRookieArena) " R1.2", "新人竞技场(请点开快速战斗)").OnEvent("Click", ClickOnRookieArena)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedLoveTalking) " " " R1.2 Section", "咨询妮姬(可以通过收藏改变妮姬排序)").OnEvent("Click", ClickOnLoveTalking)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedLongTalk) " R1.2 XP+15 Y+M", "若图鉴未满，则进行详细咨询").OnEvent("Click", ClickOnLongTalk)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedCompanyTower) " R1.2 xs Section", "爬企业塔").OnEvent("Click", ClickOnCompanyTower)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedTribeTower) " R1.2 XP+15 Y+M", "只完成每日任务，在进入后退出").OnEvent("Click", ClickOnTribeTower)
-YYGui.Add("Checkbox", IsCheckedToString(isCheckedInterception) " R1.2 xs", "使用对应编队进行异常拦截自动战斗").OnEvent("Click", ClickOnInterception)
-YYGui.Add("DropDownList", "Choose" InterceptionBossToLabel(InterceptionBoss), ["克拉肯(石)，编队1", "过激派(头)，编队2", "镜像容器(手)，编队3", "茵迪维利亚(衣)，编队4", "死神(脚)，编队5"]).OnEvent("Change", ChangeOnInterceptionBoss)
-Tab.UseTab("默认")
-YYGui.Add("Text", , "购买几本代码手册？")
-YYGui.Add("DropDownList", "Choose" NumOfBookToLabel(numOfBook), [0, 1, 2, 3]).OnEvent("Change", ChangeOnNumOfBook)
-YYGui.Add("Text", , "新人竞技场打几次？")
-YYGui.Add("DropDownList", "Choose" NumOfBattleToLabel(numOfBattle), [2, 3, 4, 5]).OnEvent("Change", ChangeOnNumOfBattle)
-YYGui.Add("Text", , "咨询几位妮姬？")
-YYGui.Add("DropDownList", "Choose" NumOfLoveTalkingToLabel(numOfLoveTalking), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).OnEvent("Change", ChangeOnNumOfLoveTalking)
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedEnterGame) " R1.2", "进入游戏并点掉促销页面").OnEvent("Click", ClickOnEnterGame)
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedDailyCheck) " R1.2", "执行情绪检测").OnEvent("Click", ClickOnDailyCheck)
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedMiMeng) " R1.2", "秘盟收取及捐赠（最低档）").OnEvent("Click", ClickOnMiMeng)
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedFriend) " R1.2", "好友点数收取").OnEvent("Click", ClickOnFriend)
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedOversight) " R1.2", "监管奖励收取").OnEvent("Click", ClickOnOversight)
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedPurchase) " R1.2", "领取每日免费礼包").OnEvent("Click", ClickOnPurchase)
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedOffice) " R1.2", "一键派遣/领取体力").OnEvent("Click", ClickOnOffice)
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedCollectDaily) " R1.2", "领取每日和战令奖励").OnEvent("Click", ClickOnCollectDaily)
+Tab.UseTab("作战")
+YYGui.SetFont("cred")
+YYGui.Add("Text", "R1", "作战任务都需要已经开启扫荡，否则别选")
+YYGui.Add("Text", "R1", "金币/恶种/技能书:都会扫荡最高级副本并且用光体力")
+YYGui.Add("Text", "R1", "为完成每日可三选一或手动扫荡自己需要的地图")
+YYGui.SetFont()
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedDoMemoryStorm) " R1.2", "扫荡记忆风暴").OnEvent("Click", ClickOnDoMemoryStorm)
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedDoWell) " " " R1.2", "扫荡浊暗之井乐园幻境").OnEvent("Click", ClickOnDoWell)
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedSweepGold) " R1.2", "扫荡金币副本").OnEvent("Click", ClickOnSweepGold)
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedSweepSeed) " R1.2", "扫荡恶种副本").OnEvent("Click", ClickOnSweepSeed)
+YYGui.Add("Checkbox", IsCheckedToString(isCheckedSweepSkill) " R1.2", "扫荡技能书副本").OnEvent("Click", ClickOnSkill)
 Tab.UseTab()
-YYGui.Add("Button", "Default w80 xm+100", "DORO!").OnEvent("Click", ClickOnDoro)
+YYGui.Add("Button", "Default w80 xm+100", "开始办公!").OnEvent("Click", ClickOnLanli)
 YYGui.Show()
