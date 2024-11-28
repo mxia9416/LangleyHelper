@@ -200,7 +200,6 @@ ClickOnLanli(*) {
     loop {
 
         ;scrRatio := windowW / stdScreenW
-        
 
         WinActivate "雷电模拟器"
 
@@ -242,11 +241,11 @@ ClickOnLanli(*) {
 
         if isCheckedCollectDaily
             CollectDaily()
+        MsgBox "雪鸮完成工作！"
+
+        ExitApp
     }
 
-    MsgBox "雪鸮完成工作！"
-
-    ExitApp
 }
 
 SleepTimeToLabel(sleepTime) {

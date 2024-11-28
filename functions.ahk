@@ -252,13 +252,15 @@ OversightStory() {
     stdCkptY := [994]
     desiredColor := ["0x03050f"]
 
-    while !UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
-        UserClick(stdTargetX, stdTargetY, scrRatio)
+    Text :=
+        "|<>*98$71.zU3slzyDk03zz7ZlXbyDbz7zyD1X6DyTDyDzwSH6AzzyQ0TzswWAFzzws0zzllYMbw3tnlzzU30kDs7nbXzz071UzyDbD7zzsy31zwQ003zzlz6Dzls007ztXyADz7nzyDzn7kMDyDbzwTza10kDs3A0MzzA01WDk6M0lzyMlX6DyAltXzwlrCCTwNXn7ztXyQTztn06Dzn7ssxzXa0ATzaDlltzDDzszzAP7XnwCTw1zyE6D77kAzs7zk08yCD0DzzzzU73w0SC3zzzzjwDw1sy000Dzzwzw7vz000T"
+
+    while (FindText(&X, &Y, 2075 - windowW, 232 - windowH, 2075 + windowW, 232 + windowH, 0, 0, Text)) {
+        FindText().Click(X, Y, "L")
         Sleep sleepTime
-        if A_Index > waitTolerance {
-            MsgBox "阅读监管故事失败！"
-            ExitApp
-        }
+        FindText().Click(X, Y, "L")
+        Sleep sleepTime
+        UserClick(stdTargetX, stdTargetY, scrRatio)
     }
 }
 
@@ -288,7 +290,10 @@ SelectBundleTab() {
         "|<>*85$71.zzzzzzzzzzzzzzzzzzzzzzzzDzzzzzzzz27z3lsblzlzy07y3U001zUzw8Qy71U63zVwMEUw674C7z1s001sQ60MDy7kV33kw0E0Tw0V267zsMVlzQ024ADblx3ty00000S7U23Xzw0000070003zsMEVVsS0007zUkV33ky0M0Tz1V2673zXkTzy7000C7z1UjzsS7zkMDy707zkwTzkkz0007z1zzz1VC000Ty0000207ksTzs0Tzyw0DVktzU07zskET3VVz0E000NV0001w0U7z0y20C0znV4Dy3w7sw1zz3sTw7sDUS0zy7kzsDky1y0zwDU00T1sDy1zsT3w0y73zy3zkzXsDw0zzyDzVzVk7kU3zw3z3z1UT3U000Dy7y33iDk000TwDw6C8zw000zsRs8s3zzU03zks000TzzzzzzVzzzzzzzzzzzzzzzzzzzzzzzzzzzw"
 
     if (ok := FindText(&X, &Y, 490 - windowW, 793 - windowH, 490 + windowW, 793 + windowH, 0, 0, Text)) {
-        FindText().Click(X, Y, "L")
+        loop 5 {
+            FindText().Click(X, Y, "L")
+            Sleep sleepTime
+        }
     }
 
 }
@@ -1050,6 +1055,8 @@ BP() {
         }
     }
 
+    Sleep 3000
+
     if UserCheckColor([697], [425], ["0xffd213"], scrRatio) {
         stdTargetX := 611
         stdTargetY := 451
@@ -1090,6 +1097,8 @@ BP() {
 
         }
     }
+
+    Sleep 3000
 
     if UserCheckColor([1556], [1031], ["0xffd213"], scrRatio) {
         stdTargetX := 1457

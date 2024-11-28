@@ -61,6 +61,9 @@ EnterGame() {
             ExitApp
         }
     }
+    loop 20{
+        UserClick(91, 567, scrRatio)
+    }
 }
 
 DailyCheck() {
@@ -266,9 +269,9 @@ catch as err {
     WriteSettings()
 }
 
-if isCheckedAutoCheckUpdate {
-    CheckForUpdate()
-}
+;if isCheckedAutoCheckUpdate {
+;    CheckForUpdate()
+;}
 
 ;创建gui
 YYGui := Gui(, "雪鸮小助手 " currentVersion)
